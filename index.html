@@ -5,23 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>HOME GYM PRO | 36 تمرين منزلي فريد</title>
+<title>HOME GYM PRO</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap');
 
   :root {
-    --bg: #0f1115;
-    --card: #181b22;
-    --card-border: #262b36;
-    --surface: #20242d;
-    --surface-hover: #282d38;
-    --text: #f3f4f6;
-    --muted: #9ca3af;
-    --accent: #3b82f6;
-    --accent-soft: rgba(59, 130, 246, 0.15);
-    --danger: #ef4444;
-    --done: #10b981;
-    --amber: #f59e0b;
+    --bg: #09090b;
+    --card: #121215;
+    --surface: #18181c;
+    --surface-2: #222228;
+    --border: #27272a;
+    --text: #ffffff;
+    --muted: #a1a1aa;
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --blue-soft: rgba(59, 130, 246, 0.14);
   }
 
   * {
@@ -40,20 +38,91 @@
     overflow-x: hidden;
   }
 
-  /* Sticky Top Header */
+  /* Splash Loading Screen */
+  #splashScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #09090b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+  }
+
+  #splashScreen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .splash-logo-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 24px;
+    background: #121216;
+    border: 1.5px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 35px rgba(59, 130, 246, 0.22);
+    animation: pulseLogo 1.4s infinite ease-in-out;
+  }
+
+  .splash-logo-wrap svg {
+    width: 44px;
+    height: 44px;
+    color: var(--blue);
+  }
+
+  @keyframes pulseLogo {
+    0%, 100% { transform: scale(1); border-color: #27272a; }
+    50% { transform: scale(1.06); border-color: var(--blue); }
+  }
+
+  .splash-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  .splash-title span {
+    color: var(--blue);
+  }
+
+  .splash-bar-track {
+    width: 150px;
+    height: 4px;
+    background: #18181c;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .splash-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--blue);
+    border-radius: 99px;
+    transition: width 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Header */
   header {
     position: sticky;
     top: 0;
     z-index: 60;
-    background: rgba(15, 17, 21, 0.94);
+    background: rgba(9, 9, 11, 0.92);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--border);
     padding: 10px 14px;
   }
 
   .header-inner {
-    max-width: 560px;
+    max-width: 540px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -65,25 +134,59 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 0.98rem;
     font-weight: 900;
-    font-size: 1rem;
-    color: #fff;
+    letter-spacing: 0.4px;
+    color: var(--text);
   }
 
-  .brand-badge {
-    background: var(--accent);
+  .brand svg {
+    color: var(--blue);
+    width: 22px;
+    height: 22px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Top Calendar Icon Button */
+  .cal-icon-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
     color: #fff;
-    font-size: 0.68rem;
-    padding: 2px 7px;
-    border-radius: 6px;
+    height: 34px;
+    padding: 0 11px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 0.75rem;
     font-weight: 800;
+    cursor: pointer;
+    transition: 0.15s;
   }
 
-  .mode-switch {
+  .cal-icon-btn:active,
+  .cal-icon-btn.done-day {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+  }
+
+  .cal-icon-btn svg {
+    width: 16px;
+    height: 16px;
+    color: var(--blue);
+  }
+
+  .mode-toggle {
     display: flex;
     background: var(--surface);
-    border: 1px solid var(--card-border);
-    border-radius: 9px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     padding: 2px;
     gap: 2px;
   }
@@ -95,112 +198,46 @@
     font-family: inherit;
     font-size: 0.7rem;
     font-weight: 800;
-    padding: 4px 8px;
+    padding: 4px 9px;
     border-radius: 7px;
     cursor: pointer;
-    transition: 0.18s;
+    transition: 0.15s;
   }
 
   .mode-btn.active {
-    background: var(--accent);
+    background: var(--blue-dark);
     color: #fff;
   }
 
-  /* Main Layout Container */
-  .main-wrap {
-    max-width: 560px;
+  /* Main Container */
+  .container {
+    max-width: 540px;
     margin: 0 auto;
-    padding: 8px 12px;
+    padding: 12px;
   }
 
-  /* Always-Visible 30-Day Calendar Card */
-  .cal-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 10px 12px;
-    margin-bottom: 10px;
-  }
-
-  .cal-top {
+  /* Split Title & Filter Chips */
+  .split-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 0.78rem;
+    padding: 0 2px;
   }
 
-  .cal-top b {
-    color: #fff;
-    font-weight: 800;
-  }
-
-  .cal-stats {
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 700;
-  }
-
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 5px;
-  }
-
-  .day-pill {
-    aspect-ratio: 1;
-    border-radius: 7px;
-    background: var(--surface);
-    border: 1px solid var(--card-border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 800;
-    color: var(--muted);
-    cursor: pointer;
-    position: relative;
-    transition: 0.15s;
-  }
-
-  .day-pill.active {
-    border-color: var(--accent);
-    background: var(--accent-soft);
-    color: #fff;
-  }
-
-  .day-pill.logged::after {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--done);
-    position: absolute;
-    bottom: 3px;
-  }
-
-  /* Split Title & Sub-muscle Filter Pills */
-  .split-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 2px 8px;
-  }
-
-  .split-header h1 {
+  .split-bar h1 {
     font-size: 1.02rem;
     font-weight: 900;
     color: #fff;
   }
 
-  .split-header span {
-    font-size: 0.73rem;
-    color: var(--muted);
-    font-weight: 700;
+  .split-bar span {
+    font-size: 0.74rem;
+    color: var(--blue);
+    font-weight: 800;
   }
 
-  .filter-bar {
+  .chips-row {
     display: flex;
     gap: 6px;
     overflow-x: auto;
@@ -209,188 +246,171 @@
     scrollbar-width: none;
   }
 
-  .filter-bar::-webkit-scrollbar {
+  .chips-row::-webkit-scrollbar {
     display: none;
   }
 
-  .filter-chip {
+  .chip {
     background: var(--card);
-    border: 1px solid var(--card-border);
+    border: 1px solid var(--border);
     color: var(--muted);
-    padding: 4px 11px;
+    padding: 4px 12px;
     border-radius: 99px;
     font-family: inherit;
     font-size: 0.72rem;
     font-weight: 800;
     white-space: nowrap;
     cursor: pointer;
+    transition: 0.15s;
   }
 
-  .filter-chip.active {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: #93c5fd;
+  .chip.active {
+    background: var(--blue-soft);
+    border-color: var(--blue);
+    color: #fff;
   }
 
-  /* Exercise Card */
+  /* Clean Minimalist Exercise Card */
   .ex-card {
     background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 15px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
     margin-bottom: 12px;
     overflow: hidden;
     transition: border-color 0.2s;
   }
 
-  .ex-card.completed {
-    border-color: rgba(16, 185, 129, 0.55);
+  .ex-card.done {
+    border-color: var(--blue);
   }
 
-  .ex-body {
+  .ex-top {
     display: grid;
-    grid-template-columns: 152px 1fr;
-    gap: 11px;
-    padding: 11px;
+    grid-template-columns: 118px 1fr;
+    gap: 12px;
+    padding: 10px;
     align-items: center;
   }
 
-  @media (max-width: 390px) {
-    .ex-body {
-      grid-template-columns: 132px 1fr;
-    }
-  }
-
-  /* Dual Visual Media Box (Real Looping Frames + Unique IK Anatomy) */
+  /* Exercise Media Box */
   .media-box {
-    width: 100%;
-    height: 156px;
-    background: #12151c;
-    border: 1px solid #262c3a;
+    width: 118px;
+    height: 112px;
+    background: #0d0d10;
+    border: 1px solid var(--border);
     border-radius: 12px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    flex-shrink: 0;
   }
 
-  .real-loop-wrap {
+  .real-wrap {
     width: 100%;
     height: 100%;
     position: relative;
-    background: #0d1016;
   }
 
-  .real-frame {
+  .real-img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: grayscale(20%) contrast(1.05);
     transition: opacity 0.22s ease-in-out;
   }
 
-  .real-frame.f0 { opacity: 1; }
-  .real-frame.f1 { opacity: 0; }
-  .real-loop-wrap.step2 .real-frame.f0 { opacity: 0; }
-  .real-loop-wrap.step2 .real-frame.f1 { opacity: 1; }
+  .real-img.f0 { opacity: 1; }
+  .real-img.f1 { opacity: 0; }
+  .real-wrap.step2 .real-img.f0 { opacity: 0; }
+  .real-wrap.step2 .real-img.f1 { opacity: 1; }
 
-  .anatomy-canvas {
+  .anatomy-cv {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     display: none;
-    background: #12151c;
+    background: #0d0d10;
   }
 
-  body.mode-anatomy .anatomy-canvas {
+  body.mode-anatomy .anatomy-cv {
     display: block;
   }
 
-  body.mode-anatomy .real-loop-wrap {
+  body.mode-anatomy .real-wrap {
     display: none;
   }
 
-  .badge-muscle {
+  .num-tag {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 5px;
+    right: 5px;
     z-index: 4;
-    background: rgba(15, 17, 21, 0.82);
-    border: 1px solid rgba(59, 130, 246, 0.45);
-    color: #93c5fd;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 1px 6px;
-    border-radius: 5px;
-    backdrop-filter: blur(4px);
-  }
-
-  .badge-loop {
-    position: absolute;
-    bottom: 5px;
-    left: 6px;
-    z-index: 4;
-    background: rgba(15, 17, 21, 0.8);
-    color: #e5e7eb;
-    font-size: 0.58rem;
-    font-weight: 800;
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-family: monospace;
-  }
-
-  .badge-num {
-    position: absolute;
-    bottom: 5px;
-    right: 6px;
-    z-index: 4;
-    background: rgba(59, 130, 246, 0.85);
+    background: rgba(9, 9, 11, 0.85);
+    border: 1px solid var(--border);
     color: #fff;
     font-size: 0.62rem;
     font-weight: 900;
     padding: 1px 6px;
-    border-radius: 4px;
+    border-radius: 5px;
   }
 
-  /* Exercise Info Column */
-  .ex-details {
+  .zoom-tag {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 4;
+    background: rgba(9, 9, 11, 0.85);
+    color: var(--blue);
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Title & Quick Action Icons */
+  .ex-info {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    justify-content: space-between;
+    height: 100%;
+    gap: 10px;
     min-width: 0;
   }
 
-  .title-row {
+  .ex-head-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 6px;
+    gap: 8px;
   }
 
   .ex-ar {
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     font-weight: 900;
     color: #fff;
-    line-height: 1.25;
+    line-height: 1.3;
   }
 
   .ex-en {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     color: var(--muted);
     font-weight: 700;
     display: block;
-    margin-top: 1px;
+    margin-top: 2px;
   }
 
-  .done-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    border: 1.5px solid var(--card-border);
+  .check-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
     background: var(--surface);
-    color: transparent;
-    font-size: 0.85rem;
-    font-weight: 900;
+    color: var(--muted);
     cursor: pointer;
     flex-shrink: 0;
     display: flex;
@@ -399,119 +419,239 @@
     transition: 0.15s;
   }
 
-  .ex-card.completed .done-btn {
-    background: var(--done);
-    border-color: var(--done);
-    color: #09110d;
+  .ex-card.done .check-btn {
+    background: var(--blue-dark);
+    border-color: var(--blue);
+    color: #fff;
   }
 
-  /* Ultra-Concise 2-Line Technique Box */
-  .cues-box {
-    background: #13161d;
-    border-right: 3px solid var(--accent);
-    border-radius: 7px;
-    padding: 6px 8px;
-    font-size: 0.73rem;
-    line-height: 1.48;
-    color: #d1d5db;
-  }
-
-  .cues-box div {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
-
-  .cues-box b {
-    color: #93c5fd;
-  }
-
-  /* Card Footer: Weight & Sets + Video Links */
-  .ex-footer {
+  .meta-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 6px;
-    padding: 8px 11px;
-    background: #14171e;
-    border-top: 1px solid var(--card-border);
-    flex-wrap: wrap;
   }
 
-  .inputs-wrap {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .input-pill {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--surface);
-    border: 1px solid var(--card-border);
-    border-radius: 7px;
-    padding: 2px 7px;
-  }
-
-  .input-pill input {
-    width: 36px;
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.78rem;
-    font-weight: 900;
-    text-align: center;
-    outline: none;
-  }
-
-  .input-pill span {
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-weight: 800;
-  }
-
-  .video-btns {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .yt-link {
-    background: rgba(239, 68, 68, 0.14);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
-    text-decoration: none;
-    padding: 4px 9px;
-    border-radius: 7px;
-    font-size: 0.7rem;
-    font-weight: 800;
+  .muscle-pill {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 7px;
   }
 
-  .swap-view-btn {
+  .muscle-pill i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+  }
+
+  .icon-btn {
     background: var(--surface);
-    border: 1px solid var(--card-border);
-    color: var(--text);
-    padding: 4px 8px;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    height: 28px;
+    padding: 0 9px;
     border-radius: 7px;
     font-family: inherit;
     font-size: 0.68rem;
     font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     cursor: pointer;
   }
 
-  /* Fullscreen Zoom Modal */
+  .icon-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  /* Previous Session Faded Row (Right above KG Counter) */
+  .prev-session-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 10px 2px;
+    background: #0e0e11;
+    border-top: 1px solid var(--border);
+  }
+
+  .prev-session-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: var(--muted);
+    opacity: 0.62;
+    cursor: pointer;
+    transition: opacity 0.15s, color 0.15s;
+  }
+
+  .prev-session-badge:active {
+    opacity: 1;
+    color: var(--blue);
+  }
+
+  .prev-session-badge svg {
+    width: 12px;
+    height: 12px;
+    color: var(--blue);
+    flex-shrink: 0;
+  }
+
+  .prev-session-badge b {
+    color: #e4e4e7;
+    font-weight: 800;
+  }
+
+  .prev-copy-hint {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--blue);
+    opacity: 0.55;
+  }
+
+  /* 3 Side-by-Side Counters (Weight KG | Sets | Reps) */
+  .counters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 5px 10px 10px;
+    background: #0e0e11;
+  }
+
+  .counter-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .counter-label {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .counter-label span {
+    color: var(--blue);
+    font-weight: 900;
+  }
+
+  .counter-ctrl {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2px;
+  }
+
+  .step-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--blue);
+    font-size: 0.95rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: 0.12s;
+  }
+
+  .step-btn:active {
+    background: var(--blue-dark);
+    color: #fff;
+  }
+
+  .counter-input {
+    width: 38px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 900;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+
+  .counter-input::-webkit-outer-spin-button,
+  .counter-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Finish Workout Button Section */
+  .finish-wrap {
+    margin: 18px 0 8px;
+  }
+
+  .finish-btn {
+    width: 100%;
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid var(--blue);
+    background: var(--blue-dark);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.28);
+    transition: 0.2s;
+  }
+
+  .finish-btn:active {
+    transform: scale(0.98);
+  }
+
+  .finish-btn.completed {
+    background: var(--surface);
+    border-color: var(--blue);
+    color: var(--blue);
+    box-shadow: none;
+  }
+
+  .finish-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Modals (Zoom, Calendar, Summary) */
   .modal-backdrop {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: rgba(8, 10, 14, 0.92);
+    background: rgba(0, 0, 0, 0.88);
     backdrop-filter: blur(10px);
     display: none;
     align-items: center;
@@ -523,12 +663,12 @@
     display: flex;
   }
 
-  .modal-box {
+  .modal-card {
     width: 100%;
     max-width: 420px;
     background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
     overflow: hidden;
   }
 
@@ -536,34 +676,44 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 11px 14px;
-    border-bottom: 1px solid var(--card-border);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
   }
 
   .modal-head h3 {
     font-size: 0.92rem;
     font-weight: 900;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 
-  .close-modal {
+  .modal-head h3 svg {
+    width: 18px;
+    height: 18px;
+    color: var(--blue);
+  }
+
+  .close-btn {
     background: var(--surface);
-    border: 1px solid var(--card-border);
-    color: #fff;
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 900;
   }
 
-  .modal-media {
+  .modal-stage {
     width: 100%;
     aspect-ratio: 4/3;
-    background: #0b0d12;
+    background: #070709;
     position: relative;
   }
 
-  .modal-media img {
+  .modal-stage img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -571,28 +721,152 @@
     object-fit: contain;
   }
 
-  /* Bottom 5-Day Navigation */
+  /* Calendar Modal Content */
+  .cal-modal-body {
+    padding: 14px;
+  }
+
+  .cal-stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .cal-stats-row b {
+    color: var(--blue);
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+  }
+
+  .day-btn {
+    padding: 7px 2px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.15s;
+  }
+
+  .day-btn small {
+    font-size: 0.56rem;
+    font-weight: 700;
+    color: var(--muted);
+    opacity: 0.75;
+  }
+
+  .day-btn.active {
+    background: var(--blue-soft);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  .day-btn.active small {
+    color: var(--blue);
+    opacity: 1;
+  }
+
+  .day-btn.logged::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+
+  /* Finish Summary Modal Content */
+  .summary-body {
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .summary-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--blue-soft);
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+
+  .summary-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+
+  .stat-card b {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--blue);
+  }
+
+  .stat-card span {
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  /* Bottom Navigation */
   .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 70;
-    background: rgba(15, 17, 21, 0.96);
+    background: rgba(9, 9, 11, 0.96);
     backdrop-filter: blur(14px);
-    border-top: 1px solid var(--card-border);
+    border-top: 1px solid var(--border);
     padding: 6px 8px 12px;
   }
 
   .nav-grid {
-    max-width: 560px;
+    max-width: 540px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 5px;
   }
 
-  .nav-item {
+  .nav-btn {
     background: transparent;
     border: 1px solid transparent;
     color: var(--muted);
@@ -603,996 +877,698 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 2px;
     font-size: 0.72rem;
     font-weight: 800;
+    transition: 0.15s;
   }
 
-  .nav-item.active {
+  .nav-btn svg {
+    width: 16px;
+    height: 16px;
+    color: var(--muted);
+    transition: 0.15s;
+  }
+
+  .nav-btn.active {
     background: var(--surface);
-    border-color: var(--card-border);
+    border-color: var(--border);
     color: #fff;
   }
 
-  .nav-item small {
-    font-size: 0.58rem;
-    color: var(--accent);
-    font-weight: 700;
+  .nav-btn.active svg {
+    color: var(--blue);
   }
 </style>
 </head>
 <body>
 
+<!-- Splash Screen with Animated Logo -->
+<div id="splashScreen">
+  <div class="splash-logo-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 6.5 17.5 17.5"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>
+    </svg>
+  </div>
+  <div class="splash-title">HOME <span>GYM</span></div>
+  <div class="splash-bar-track">
+    <div class="splash-bar-fill" id="splashBar"></div>
+  </div>
+</div>
+
 <header>
   <div class="header-inner">
     <div class="brand">
-      HOME GYM <span class="brand-badge">36 UNIQUE CLIPS</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6.5 6.5 17.5 17.5"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>
+      </svg>
+      <span>HOME GYM</span>
     </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="btnModeReal" onclick="setVisualMode('real')">🎬 فيديو حقيقي</button>
-      <button class="mode-btn" id="btnModeAnatomy" onclick="setVisualMode('anatomy')">💪 تشريح العضلة</button>
+
+    <div class="header-actions">
+      <!-- Top Calendar Icon Trigger -->
+      <button class="cal-icon-btn" id="topCalBtn" onclick="openCalModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>يوم <b id="activeDayHeader">1</b></span>
+      </button>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modeRealBtn" onclick="setVisualMode('real')">فيديو</button>
+        <button class="mode-btn" id="modeAnatomyBtn" onclick="setVisualMode('anatomy')">تشريح</button>
+      </div>
     </div>
   </div>
 </header>
 
-<main class="main-wrap">
-  <!-- 30-Day Tracker Calendar Always Visible -->
-  <section class="cal-card">
-    <div class="cal-top">
-      <b>📅 تقويم الـ 30 يوم (يوم <span id="calDayLabel">1</span>)</b>
-      <span class="cal-stats" id="calStatsLabel">سجّل أوزانك ومجاميعك</span>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-  </section>
-
-  <!-- Active Split Title -->
-  <div class="split-header">
-    <h1 id="splitTitle">يوم 1: الذراع الكامل (باي وتراي)</h1>
-    <span id="splitCount">8 تمارين</span>
+<main class="container">
+  <!-- Active Workout Split Header -->
+  <div class="split-bar">
+    <h1 id="splitTitle">الذراع</h1>
+    <span id="splitMeta">8 تمارين</span>
   </div>
 
-  <!-- Sub-Muscle Filter Chips -->
-  <div class="filter-bar" id="filterBar"></div>
+  <!-- Sub-muscle Filters -->
+  <div class="chips-row" id="filterRow"></div>
 
-  <!-- Exercises Container -->
-  <div id="exercisesContainer"></div>
+  <!-- Exercise List -->
+  <div id="exList"></div>
+
+  <!-- Finish Workout Button -->
+  <div class="finish-wrap">
+    <button class="finish-btn" id="finishDayBtn" onclick="finishWorkoutDay()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="finishBtnText">إنهاء تمرين اليوم</span>
+    </button>
+  </div>
 </main>
 
-<!-- Zoom Modal for High-Res Real Exercise Loop -->
-<div class="modal-backdrop" id="zoomModal" onclick="closeZoomModal(event)">
-  <div class="modal-box" onclick="event.stopPropagation()">
+<!-- 30-Day Calendar Popup Modal -->
+<div class="modal-backdrop" id="calModal" onclick="closeCalModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-head">
-      <h3 id="modalTitle">تفاصيل التمرين</h3>
-      <button class="close-modal" onclick="closeZoomModal()">✕</button>
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>جدول الـ 30 يوم</span>
+      </h3>
+      <button class="close-btn" onclick="closeCalModal()">✕</button>
     </div>
-    <div class="modal-media">
-      <img id="modalImg0" src="" alt="Start Frame">
-      <img id="modalImg1" src="" alt="End Frame" style="opacity:0; transition:opacity 0.25s;">
+    <div class="cal-modal-body">
+      <div class="cal-stats-row">
+        <span>اختر اليوم لتسجيل أوزانك</span>
+        <span id="calTotalDone"><b>0</b> / 30 مكتمل</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
     </div>
   </div>
 </div>
 
-<!-- Bottom 5-Day Navigation -->
+<!-- Finish Workout Summary Modal -->
+<div class="modal-backdrop" id="summaryModal" onclick="closeSummaryModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3>عاش يا بطل!</h3>
+      <button class="close-btn" onclick="closeSummaryModal()">✕</button>
+    </div>
+    <div class="summary-body">
+      <div class="summary-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-size:0.95rem; font-weight:900;">تم حفظ تمرين يوم <span id="sumDayNum">1</span></div>
+      <div class="summary-stats">
+        <div class="stat-card">
+          <b id="sumExCount">0</b>
+          <span>تمارين</span>
+        </div>
+        <div class="stat-card">
+          <b id="sumSetsCount">0</b>
+          <span>مجاميع</span>
+        </div>
+        <div class="stat-card">
+          <b id="sumRepsCount">0</b>
+          <span>عدات</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="finish-btn" style="height:44px; flex:1; background:var(--surface); border-color:var(--border); box-shadow:none;" onclick="closeSummaryModal()">البقاء باليوم</button>
+        <button class="finish-btn" style="height:44px; flex:1.3;" onclick="advanceToNextDay()">اليوم التالي ⬅</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exercise Zoom Modal -->
+<div class="modal-backdrop" id="zoomModal" onclick="closeModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3 id="modalTitle">التمرين</h3>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-stage">
+      <img id="modalImg0" src="" alt="Start">
+      <img id="modalImg1" src="" alt="End" style="opacity:0; transition:opacity 0.25s;">
+    </div>
+  </div>
+</div>
+
+<!-- Bottom 5-Split Navigation -->
 <nav class="bottom-nav">
   <div class="nav-grid">
-    <button class="nav-item active" id="nav0" onclick="switchSplit(0)">
+    <button class="nav-btn active" id="nav0" onclick="selectSplit(0)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 11v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h3a4 4 0 0 1 4-4V6a2 2 0 0 1 2-2h2a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-5"/></svg>
       <span>الذراع</span>
-      <small>8 تمارين</small>
     </button>
-    <button class="nav-item" id="nav1" onclick="switchSplit(1)">
+    <button class="nav-btn" id="nav1" onclick="selectSplit(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="3"/><path d="M5 12h14l-2 9H7l-2-9Z"/></svg>
       <span>الكتف</span>
-      <small>7 تمارين</small>
     </button>
-    <button class="nav-item" id="nav2" onclick="switchSplit(2)">
+    <button class="nav-btn" id="nav2" onclick="selectSplit(2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="6" width="18" height="12" rx="3"/><line x1="12" y1="6" x2="12" y2="18"/></svg>
       <span>الصدر</span>
-      <small>7 تمارين</small>
     </button>
-    <button class="nav-item" id="nav3" onclick="switchSplit(3)">
+    <button class="nav-btn" id="nav3" onclick="selectSplit(3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 5h16l-3 14H7L4 5Z"/><line x1="12" y1="5" x2="12" y2="19"/></svg>
       <span>الظهر</span>
-      <small>7 تمارين</small>
     </button>
-    <button class="nav-item" id="nav4" onclick="switchSplit(4)">
+    <button class="nav-btn" id="nav4" onclick="selectSplit(4)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 4h12v6a6 6 0 0 1-12 0V4Z"/><line x1="12" y1="16" x2="12" y2="21"/></svg>
       <span>السواعد</span>
-      <small>7 تمارين</small>
     </button>
   </div>
 </nav>
 
 <script>
-// Base URL for 100% distinct, verified exercise start/end action frames
-const DB_IMG_BASE = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/";
+const DB_BASE = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/";
 
-// ==================== 36 UNIQUE HOME EXERCISES (ZERO DUPLICATE DB IDs) ====================
-const WORKOUT_DAYS = [
-  // DAY 1: ARMS (8 Unique Exercises)
+const SPLIT_SHORT_NAMES = ["ذراع", "كتف", "صدر", "ظهر", "سواعد"];
+
+const SPLITS = [
   {
-    title: "يوم 1: الذراع الكامل (باي وتراي)",
+    title: "يوم الذراع (باي وتراي)",
+    shortName: "ذراع",
     exercises: [
-      {
-        id: "arm_1",
-        dbId: "Dumbbell_Bicep_Curl",
-        ar: "تبادل دمبل بايسبس واقف",
-        en: "Standing Dumbbell Bicep Curl",
-        muscle: "بايسبس",
-        pose: "curl_supinate",
-        kg: 10, sets: 4,
-        l1: "ثبّت كوعك في جنبك واطلع بالدمبل لمستوى الكتف.",
-        l2: "لف معصمك للخارج في القمة وانزل ببطء في ثانيتين.",
-        yt: "https://www.youtube.com/results?search_query=standing+dumbbell+bicep+curl+proper+form+short"
-      },
-      {
-        id: "arm_2",
-        dbId: "Hammer_Curls",
-        ar: "هامر كيرل (شاكوش)",
-        en: "Dumbbell Hammer Curl",
-        muscle: "باي خارجي",
-        pose: "curl_hammer",
-        kg: 12, sets: 4,
-        l1: "امسك الدمبل بقبضة محايدة (الإبهام يشير للأعلى).",
-        l2: "اطلع لحد الكتف بدون مرجحة الظهر لزيادة سمك الذراع.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+hammer+curl+proper+form+short"
-      },
-      {
-        id: "arm_3",
-        dbId: "Concentration_Curls",
-        ar: "ارتكاز داخلي على الركبة",
-        en: "Seated Concentration Curl",
-        muscle: "قمة الباي",
-        pose: "curl_conc",
-        kg: 10, sets: 3,
-        l1: "اجلس على كرسي وثبّت كوعك خلف فخذك الداخلي.",
-        l2: "ارفع الدمبل باتجاه وجهك واعصر الباي ثانية كاملة فوق.",
-        yt: "https://www.youtube.com/results?search_query=seated+dumbbell+concentration+curl+form+short"
-      },
-      {
-        id: "arm_4",
-        dbId: "Cross_Body_Hammer_Curl",
-        ar: "هامر كروس أمام الصدر",
-        en: "Cross-Body Hammer Curl",
-        muscle: "براكياليس",
-        pose: "curl_cross",
-        kg: 10, sets: 3,
-        l1: "اسحب الدمبل بالعرض أمام صدرك باتجاه الكتف العكسي.",
-        l2: "ثبّت الكوع وانزل بتحكم لتفجير العضلة تحت الباي.",
-        yt: "https://www.youtube.com/results?search_query=cross+body+hammer+curl+dumbbell+form+short"
-      },
-      {
-        id: "arm_5",
-        dbId: "Standing_Dumbbell_Triceps_Extension",
-        ar: "تراي دمبل زوجي خلف الرأس",
-        en: "Overhead Dumbbell Tricep Extension",
-        muscle: "تراي طويل",
-        pose: "tri_overhead",
-        kg: 14, sets: 4,
-        l1: "ارفع دمبل واحد بكلتا يديك فوق رأسك وضم كوعيك.",
-        l2: "انزل خلف الرأس بعمق ثم افرد ذراعيك للأعلى بالكامل.",
-        yt: "https://www.youtube.com/results?search_query=overhead+dumbbell+tricep+extension+form+short"
-      },
-      {
-        id: "arm_6",
-        dbId: "Lying_Dumbbell_Tricep_Extension",
-        ar: "سكل كراشر بالدمبل على الأرض",
-        en: "Lying Dumbbell Skullcrusher",
-        muscle: "تراي كامل",
-        pose: "tri_skull",
-        kg: 10, sets: 4,
-        l1: "نم على الأرض واثنِ كوعيك لإنزال الدمبلز بجانب الرأس.",
-        l2: "ثبّت العضد عمودياً وافرد الساعد للأعلى بقوة التراي.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+skull+crushers+floor+form+short"
-      },
-      {
-        id: "arm_7",
-        dbId: "Tricep_Dumbbell_Kickback",
-        ar: "رفس تراي للخلف بالدمبل",
-        en: "Dumbbell Tricep Kickback",
-        muscle: "تراي جانبي",
-        pose: "tri_kickback",
-        kg: 8, sets: 3,
-        l1: "ميل بظهرك للأمام وارفع كوعك ثابتاً بموازاة جذعك.",
-        l2: "افرد الساعد للخلف تماماً واثبت لحظة في القمة.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+tricep+kickback+proper+form+short"
-      },
-      {
-        id: "arm_8",
-        dbId: "Bench_Dips",
-        ar: "متوازي تراي على حافة الكرسي",
-        en: "Chair Bench Dips",
-        muscle: "تراي سفلي",
-        pose: "tri_dips",
-        kg: 0, sets: 4,
-        l1: "اسند بيديك على حافة الكرسي وانزل حتى زاوية 90 للكوع.",
-        l2: "ادفع جسمك للأعلى بالتركيز على عصر عضلة الترايسبس.",
-        yt: "https://www.youtube.com/results?search_query=bench+dips+on+chair+triceps+form+short"
-      }
+      { id: "arm_1", dbId: "Dumbbell_Bicep_Curl", ar: "تبادل دمبل بايسبس", en: "Dumbbell Bicep Curl", muscle: "بايسبس", pose: "curl", kg: 10, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=standing+dumbbell+bicep+curl+short" },
+      { id: "arm_2", dbId: "Hammer_Curls", ar: "هامر كيرل شاكوش", en: "Hammer Curl", muscle: "باي خارجي", pose: "curl", kg: 12, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+hammer+curl+short" },
+      { id: "arm_3", dbId: "Concentration_Curls", ar: "ارتكاز باي على الركبة", en: "Concentration Curl", muscle: "قمة الباي", pose: "seated", kg: 10, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=concentration+curl+dumbbell+short" },
+      { id: "arm_4", dbId: "Cross_Body_Hammer_Curl", ar: "هامر كروس أمام الصدر", en: "Cross-Body Curl", muscle: "براكياليس", pose: "curl", kg: 10, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=cross+body+hammer+curl+short" },
+      { id: "arm_5", dbId: "Standing_Dumbbell_Triceps_Extension", ar: "تراي دمبل خلف الرأس", en: "Overhead Tricep Ext", muscle: "تراي طويل", pose: "overhead", kg: 14, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=overhead+dumbbell+tricep+extension+short" },
+      { id: "arm_6", dbId: "Lying_Dumbbell_Tricep_Extension", ar: "سكل كراشر أرضي", en: "Floor Skullcrusher", muscle: "تراي كامل", pose: "floor", kg: 10, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+skull+crusher+short" },
+      { id: "arm_7", dbId: "Tricep_Dumbbell_Kickback", ar: "رفس تراي بالدمبل", en: "Tricep Kickback", muscle: "تراي جانبي", pose: "row", kg: 8, sets: 3, reps: 15, yt: "https://www.youtube.com/results?search_query=dumbbell+tricep+kickback+short" },
+      { id: "arm_8", dbId: "Bench_Dips", ar: "متوازي تراي على كرسي", en: "Chair Dips", muscle: "تراي سفلي", pose: "seated", kg: 0, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=bench+dips+on+chair+short" }
     ]
   },
-
-  // DAY 2: SHOULDERS & TRAPS (7 Unique Exercises)
   {
-    title: "يوم 2: الكتف والترابيس (3D Delts)",
+    title: "يوم الكتف والترابيس",
+    shortName: "كتف",
     exercises: [
-      {
-        id: "sh_1",
-        dbId: "Dumbbell_Shoulder_Press",
-        ar: "تجميع كتف بالدمبل",
-        en: "Dumbbell Shoulder Press",
-        muscle: "كتف أمامي",
-        pose: "sh_press",
-        kg: 12, sets: 4,
-        l1: "ابدأ بالدمبلز عند مستوى الأذن وادفع للأعلى فوق رأسك.",
-        l2: "انزل بتحكم حتى يصبح الكوع بزاوية 90 درجة.",
-        yt: "https://www.youtube.com/results?search_query=seated+dumbbell+shoulder+press+form+short"
-      },
-      {
-        id: "sh_2",
-        dbId: "Arnold_Dumbbell_Press",
-        ar: "أرنولد بريس بالدمبل",
-        en: "Arnold Dumbbell Press",
-        muscle: "كتف شامل",
-        pose: "sh_arnold",
-        kg: 10, sets: 4,
-        l1: "ابدأ وكف يدك مواجه لوجهك أمام الذقن مباشرة.",
-        l2: "لف الذراعين للخارج أثناء الدفع للأعلى فوق الرأس.",
-        yt: "https://www.youtube.com/results?search_query=arnold+dumbbell+press+proper+form+short"
-      },
-      {
-        id: "sh_3",
-        dbId: "Side_Lateral_Raise",
-        ar: "رفرفة كتف جانبي زوجي",
-        en: "Dumbbell Lateral Raise",
-        muscle: "كتف جانبي",
-        pose: "sh_lat_both",
-        kg: 8, sets: 4,
-        l1: "ارفع ذراعيك للجانبين بميل بسيط في الكوع لمستوى الكتف.",
-        l2: "قُد الحركة بالكوع وليس بالرسغ وانزل ببطء.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+lateral+raise+proper+form+short"
-      },
-      {
-        id: "sh_4",
-        dbId: "One-Arm_Side_Laterals",
-        ar: "رفرفة جانبي فردي تركيز",
-        en: "One-Arm Side Lateral Raise",
-        muscle: "كتف جانبي",
-        pose: "sh_lat_single",
-        kg: 8, sets: 3,
-        l1: "اسند بيدك على حائط أو كرسي وميل بجسمك قليلاً.",
-        l2: "ارفع الدمبل الفردي للجانب لعزل الكتف الجانبي 100%.",
-        yt: "https://www.youtube.com/results?search_query=leaning+one+arm+dumbbell+lateral+raise+short"
-      },
-      {
-        id: "sh_5",
-        dbId: "Front_Dumbbell_Raise",
-        ar: "رفرفة كتف أمامي بالتبادل",
-        en: "Alternating Front Dumbbell Raise",
-        muscle: "كتف أمامي",
-        pose: "sh_front",
-        kg: 8, sets: 3,
-        l1: "ارفع الدمبل أمامك بذراع شبه مفرود حتى مستوى النظر.",
-        l2: "تجنب مرجحة الجذع وانزل في ثانيتين بتحكم.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+front+raise+proper+form+short"
-      },
-      {
-        id: "sh_6",
-        dbId: "Seated_Bent-Over_Rear_Delt_Raise",
-        ar: "رفرفة كتف خلفي منحني",
-        en: "Bent-Over Rear Delt Fly",
-        muscle: "كتف خلفي",
-        pose: "sh_rear",
-        kg: 6, sets: 4,
-        l1: "ميل بصدرك للأمام وافتح ذراعيك للخلف والجانب.",
-        l2: "ادفع الكوعين للسقف لعزل عضلة الكتف الخلفية.",
-        yt: "https://www.youtube.com/results?search_query=bent+over+rear+delt+fly+dumbbell+short"
-      },
-      {
-        id: "sh_7",
-        dbId: "Dumbbell_Shrug",
-        ar: "شراجز ترابيس بالدمبل",
-        en: "Standing Dumbbell Shrugs",
-        muscle: "ترابيس",
-        pose: "sh_shrug",
-        kg: 18, sets: 4,
-        l1: "امسك الدمبلز بجانبك وارفع كتفيك عمودياً باتجاه الأذن.",
-        l2: "اثبت ثانية كاملة في القمة ثم انزل بمد كامل.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+shrugs+traps+form+short"
-      }
+      { id: "sh_1", dbId: "Dumbbell_Shoulder_Press", ar: "تجميع كتف بالدمبل", en: "Shoulder Press", muscle: "كتف أمامي", pose: "overhead", kg: 12, sets: 4, reps: 10, yt: "https://www.youtube.com/results?search_query=dumbbell+shoulder+press+short" },
+      { id: "sh_2", dbId: "Arnold_Dumbbell_Press", ar: "أرنولد بريس بالدمبل", en: "Arnold Press", muscle: "كتف شامل", pose: "overhead", kg: 10, sets: 4, reps: 10, yt: "https://www.youtube.com/results?search_query=arnold+dumbbell+press+short" },
+      { id: "sh_3", dbId: "Side_Lateral_Raise", ar: "رفرفة كتف جانبي", en: "Lateral Raise", muscle: "كتف جانبي", pose: "overhead", kg: 8, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=dumbbell+lateral+raise+short" },
+      { id: "sh_4", dbId: "One-Arm_Side_Laterals", ar: "رفرفة جانبي فردي", en: "Single Lateral Raise", muscle: "كتف جانبي", pose: "overhead", kg: 8, sets: 3, reps: 15, yt: "https://www.youtube.com/results?search_query=one+arm+dumbbell+lateral+raise+short" },
+      { id: "sh_5", dbId: "Front_Dumbbell_Raise", ar: "رفرفة كتف أمامي", en: "Front Raise", muscle: "كتف أمامي", pose: "curl", kg: 8, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+front+raise+short" },
+      { id: "sh_6", dbId: "Seated_Bent-Over_Rear_Delt_Raise", ar: "رفرفة كتف خلفي", en: "Rear Delt Fly", muscle: "كتف خلفي", pose: "row", kg: 6, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=rear+delt+dumbbell+fly+short" },
+      { id: "sh_7", dbId: "Dumbbell_Shrug", ar: "شراجز ترابيس بالدمبل", en: "Dumbbell Shrugs", muscle: "ترابيس", pose: "overhead", kg: 18, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=dumbbell+shrugs+short" }
     ]
   },
-
-  // DAY 3: CHEST AT HOME (7 Unique Exercises)
   {
-    title: "يوم 3: الصدر المنزلي الكامل",
+    title: "يوم الصدر المنزلي",
+    shortName: "صدر",
     exercises: [
-      {
-        id: "ch_1",
-        dbId: "Dumbbell_Floor_Press",
-        ar: "ضغط صدر أرضي بالدمبل",
-        en: "Dumbbell Floor Press",
-        muscle: "صدر أوسط",
-        pose: "ch_floor_press",
-        kg: 16, sets: 4,
-        l1: "نم على الأرض وادفع الدمبلز للأعلى فوق منتصف الصدر.",
-        l2: "انزل حتى يلمس العضد الأرض بهدوء ثم ادفع بقوة.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+floor+press+chest+form+short"
-      },
-      {
-        id: "ch_2",
-        dbId: "Incline_Dumbbell_Press",
-        ar: "ضغط صدر عالي بالدمبل (مسند مائل)",
-        en: "Incline Dumbbell Press",
-        muscle: "صدر علوي",
-        pose: "ch_incline",
-        kg: 14, sets: 4,
-        l1: "اسند ظهرك بزاوية 30 درجة على وسائد صلبة أو حافة السرير.",
-        l2: "ادفع الدمبلز للأعلى لاستهداف الترقوة وأعلى الصدر.",
-        yt: "https://www.youtube.com/results?search_query=incline+dumbbell+press+upper+chest+short"
-      },
-      {
-        id: "ch_3",
-        dbId: "Close-Grip_Dumbbell_Press",
-        ar: "ضغط عصر داخلي بالدمبلز ملتصقة",
-        en: "Close-Grip Crush Dumbbell Press",
-        muscle: "صدر داخلي",
-        pose: "ch_crush",
-        kg: 12, sets: 4,
-        l1: "اضغط الدمبلين ببعضهما بقوة فوق صدرك طوال الحركة.",
-        l2: "اطلع وانزل مع استمرار عصر الدمبلين لتفجير خط الصدر.",
-        yt: "https://www.youtube.com/results?search_query=squeeze+press+dumbbell+inner+chest+short"
-      },
-      {
-        id: "ch_4",
-        dbId: "Dumbbell_Flyes",
-        ar: "تفتيح صدر بالدمبل",
-        en: "Dumbbell Chest Fly",
-        muscle: "صدر أوسط",
-        pose: "ch_fly",
-        kg: 10, sets: 3,
-        l1: "افتح ذراعيك بقوس واسع مع انثناء خفيف وثابت في الكوع.",
-        l2: "ضم الذراعين فوق الصدر كأنك تحضن شجرة كبيرة.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+chest+fly+on+floor+form+short"
-      },
-      {
-        id: "ch_5",
-        dbId: "Decline_Push-Up",
-        ar: "ضغط عالي بالقدمين فوق الكرسي",
-        en: "Decline Chair Push-Up",
-        muscle: "صدر علوي",
-        pose: "ch_decline_pu",
-        kg: 0, sets: 4,
-        l1: "ضع قدميك فوق كرسي ويديك على الأرض بعرض أوسع من الكتف.",
-        l2: "انزل بصدرك نحو الأرض لتحميل الوزن على أعلى الصدر.",
-        yt: "https://www.youtube.com/results?search_query=decline+push+ups+upper+chest+form+short"
-      },
-      {
-        id: "ch_6",
-        dbId: "Pushups",
-        ar: "ضغط أرضي قياسي كامل",
-        en: "Standard Push-Up",
-        muscle: "صدر كامل",
-        pose: "ch_pushup",
-        kg: 0, sets: 4,
-        l1: "حافظ على استقامة الجسم واجعل الكوع بزاوية 45 درجة.",
-        l2: "انزل ببطء حتى يقترب صدرك من الأرض وادفع بقوة.",
-        yt: "https://www.youtube.com/results?search_query=perfect+push+up+form+chest+short"
-      },
-      {
-        id: "ch_7",
-        dbId: "Straight-Arm_Dumbbell_Pullover",
-        ar: "أوفر بالدمبل لتوسيع القفص الصدري",
-        en: "Dumbbell Chest Pullover",
-        muscle: "صدر وسفلي",
-        pose: "ch_pullover",
-        kg: 14, sets: 3,
-        l1: "امسك دمبل واحد فوق صدرك وارجع به خلف رأسك بتحكم.",
-        l2: "اسحب الدمبل فوق صدرك مع عصر عضلات الصدر.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+pullover+chest+form+short"
-      }
+      { id: "ch_1", dbId: "Dumbbell_Floor_Press", ar: "ضغط صدر أرضي بالدمبل", en: "Dumbbell Floor Press", muscle: "صدر أوسط", pose: "floor", kg: 16, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+floor+press+short" },
+      { id: "ch_2", dbId: "Incline_Dumbbell_Press", ar: "ضغط صدر عالي بالدمبل", en: "Incline DB Press", muscle: "صدر علوي", pose: "floor", kg: 14, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=incline+dumbbell+press+short" },
+      { id: "ch_3", dbId: "Close-Grip_Dumbbell_Press", ar: "ضغط عصر داخلي", en: "Crush Grip Press", muscle: "صدر داخلي", pose: "floor", kg: 12, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=crush+press+dumbbell+chest+short" },
+      { id: "ch_4", dbId: "Dumbbell_Flyes", ar: "تفتيح صدر بالدمبل", en: "Dumbbell Chest Fly", muscle: "صدر أوسط", pose: "floor", kg: 10, sets: 3, reps: 15, yt: "https://www.youtube.com/results?search_query=dumbbell+chest+fly+short" },
+      { id: "ch_5", dbId: "Decline_Push-Up", ar: "ضغط عالي بالكرسي", en: "Decline Push-Up", muscle: "صدر علوي", pose: "floor", kg: 0, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=decline+push+up+short" },
+      { id: "ch_6", dbId: "Pushups", ar: "ضغط أرضي قياسي", en: "Standard Push-Up", muscle: "صدر كامل", pose: "floor", kg: 0, sets: 4, reps: 20, yt: "https://www.youtube.com/results?search_query=perfect+push+up+short" },
+      { id: "ch_7", dbId: "Straight-Arm_Dumbbell_Pullover", ar: "أوفر دمبل للصدر", en: "Dumbbell Pullover", muscle: "صدر سفلي", pose: "floor", kg: 14, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+pullover+chest+short" }
     ]
   },
-
-  // DAY 4: BACK & LATS (7 Unique Exercises)
   {
-    title: "يوم 4: الظهر والمجنص والقطنية",
+    title: "يوم الظهر والمجنص",
+    shortName: "ظهر",
     exercises: [
-      {
-        id: "bk_1",
-        dbId: "One-Arm_Dumbbell_Row",
-        ar: "منشار ظهر فردي بالدمبل على كرسي",
-        en: "One-Arm Dumbbell Row",
-        muscle: "مجنص",
-        pose: "bk_one_row",
-        kg: 16, sets: 4,
-        l1: "اسند بيدك وركبتك على كرسي واسحب الدمبل باتجاه الحوض.",
-        l2: "اسحب بكوعك للخلف والأعلى مع تثبيت استقامة الظهر.",
-        yt: "https://www.youtube.com/results?search_query=one+arm+dumbbell+row+proper+form+short"
-      },
-      {
-        id: "bk_2",
-        dbId: "Bent_Over_Two-Dumbbell_Row",
-        ar: "سحب دمبل زوجي منحني",
-        en: "Bent-Over Two-Dumbbell Row",
-        muscle: "سمك الظهر",
-        pose: "bk_two_row",
-        kg: 14, sets: 4,
-        l1: "احنِ جذعك 45 درجة للأمام مع شد البطن والقطنية.",
-        l2: "اسحب الدمبلين نحو البطن وضم لوحي الكتف بقوة.",
-        yt: "https://www.youtube.com/results?search_query=bent+over+dumbbell+row+two+arms+short"
-      },
-      {
-        id: "bk_3",
-        dbId: "Reverse_Grip_Bent-Over_Rows",
-        ar: "سحب ظهر بقبضة معكوسة (كف للأمام)",
-        en: "Underhand Reverse-Grip Row",
-        muscle: "مجنص سفلي",
-        pose: "bk_under_row",
-        kg: 14, sets: 3,
-        l1: "امسك الدمبلز وكف يدك للأمام وابقَ منحنياً بظهر مفرود.",
-        l2: "اسحب الكوعين ملاصقين لجسمك لعزل أسفل المجنص.",
-        yt: "https://www.youtube.com/results?search_query=underhand+dumbbell+row+lower+lats+short"
-      },
-      {
-        id: "bk_4",
-        dbId: "Dumbbell_Rear_Delt_Row",
-        ar: "سحب ظهر بمرفق مفتوح لأعلى الظهر",
-        en: "Wide-Elbow Upper Back Row",
-        muscle: "أعلى الظهر",
-        pose: "bk_wide_row",
-        kg: 10, sets: 3,
-        l1: "ميل للأمام واسحب الدمبلز بفتح الكوعين للخارج.",
-        l2: "اعصر عضلات أعلى الظهر واللوحين في قمة الحركة.",
-        yt: "https://www.youtube.com/results?search_query=wide+elbow+dumbbell+row+upper+back+short"
-      },
-      {
-        id: "bk_5",
-        dbId: "Bent-Arm_Dumbbell_Pullover",
-        ar: "أوفر دمبل لعرض المجنص",
-        en: "Lat Dumbbell Pullover",
-        muscle: "مجنص",
-        pose: "bk_pullover",
-        kg: 14, sets: 4,
-        l1: "نم على الأرض ومد الذراعين خلف الرأس لإطالة المجنص.",
-        l2: "اسحب الدمبل بقوة المجنص حتى يصل فوق الصدر.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+pullover+for+lats+back+short"
-      },
-      {
-        id: "bk_6",
-        dbId: "Dumbbell_Incline_Row",
-        ar: "سحب ظهر مسنود الصدر",
-        en: "Chest-Supported Dumbbell Row",
-        muscle: "سمك الظهر",
-        pose: "bk_incline_row",
-        kg: 12, sets: 3,
-        l1: "اسند صدرك على مسند مائل لمنع أي غش بالقطنية.",
-        l2: "اسحب الدمبلز للخلف واعصر منتصف الظهر ثانية كاملة.",
-        yt: "https://www.youtube.com/results?search_query=chest+supported+dumbbell+row+form+short"
-      },
-      {
-        id: "bk_7",
-        dbId: "Romanian_Deadlift_With_Dumbbells",
-        ar: "رفعة مميتة رومانية بالدمبل (RDL)",
-        en: "Dumbbell Romanian Deadlift",
-        muscle: "قطنية",
-        pose: "bk_rdl",
-        kg: 18, sets: 4,
-        l1: "ادفع الحوض للخلف مع تمرير الدمبلز بمحاذاة الساق.",
-        l2: "حافظ على استقامة الظهر تماماً واصعد بعصر القطنية.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form+short"
-      }
+      { id: "bk_1", dbId: "One-Arm_Dumbbell_Row", ar: "منشار ظهر فردي بالدمبل", en: "One-Arm DB Row", muscle: "مجنص", pose: "row", kg: 16, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=one+arm+dumbbell+row+short" },
+      { id: "bk_2", dbId: "Bent_Over_Two-Dumbbell_Row", ar: "سحب دمبل زوجي منحني", en: "Bent-Over DB Row", muscle: "سمك الظهر", pose: "row", kg: 14, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=bent+over+dumbbell+row+short" },
+      { id: "bk_3", dbId: "Reverse_Grip_Bent-Over_Rows", ar: "سحب ظهر بقبضة معكوسة", en: "Underhand DB Row", muscle: "مجنص سفلي", pose: "row", kg: 14, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=underhand+dumbbell+row+short" },
+      { id: "bk_4", dbId: "Dumbbell_Rear_Delt_Row", ar: "سحب بمرفق مفتوح", en: "Wide-Elbow Row", muscle: "أعلى الظهر", pose: "row", kg: 10, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=wide+elbow+dumbbell+row+short" },
+      { id: "bk_5", dbId: "Bent-Arm_Dumbbell_Pullover", ar: "أوفر دمبل للمجنص", en: "Lat DB Pullover", muscle: "مجنص", pose: "floor", kg: 14, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+pullover+lats+short" },
+      { id: "bk_6", dbId: "Dumbbell_Incline_Row", ar: "سحب ظهر مسنود الصدر", en: "Chest-Supported Row", muscle: "سمك الظهر", pose: "row", kg: 12, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=chest+supported+dumbbell+row+short" },
+      { id: "bk_7", dbId: "Romanian_Deadlift_With_Dumbbells", ar: "رفعة مميتة رومانية", en: "Dumbbell RDL", muscle: "قطنية", pose: "row", kg: 18, sets: 4, reps: 10, yt: "https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+short" }
     ]
   },
-
-  // DAY 5: FOREARMS, WRIST & GRIP (7 Unique Exercises)
   {
-    title: "يوم 5: السواعد والريست والقبضة",
+    title: "يوم السواعد والريست",
+    shortName: "سواعد",
     exercises: [
-      {
-        id: "wr_1",
-        dbId: "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
-        ar: "لف رسغ داخلي بالدمبل على الركبة",
-        en: "Palms-Up Dumbbell Wrist Curl",
-        muscle: "ساعد داخلي",
-        pose: "wr_curl_up",
-        kg: 10, sets: 4,
-        l1: "ثبّت ساعدك على فخذك وكف اليد متجه للأعلى.",
-        l2: "انزل بالدمبل للأصابع ثم اثنِ الرسغ للأعلى بأقصى قوة.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+wrist+curl+forearms+form+short"
-      },
-      {
-        id: "wr_2",
-        dbId: "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
-        ar: "لف رسغ عكسي بالدمبل",
-        en: "Palms-Down Reverse Wrist Curl",
-        muscle: "ساعد خارجي",
-        pose: "wr_curl_down",
-        kg: 6, sets: 4,
-        l1: "ثبّت ساعدك على الركبة وكف اليد متجه للأسفل.",
-        l2: "ارفع ظهر الكف للأعلى بمدى حركي كامل وتحكم.",
-        yt: "https://www.youtube.com/results?search_query=reverse+dumbbell+wrist+curl+form+short"
-      },
-      {
-        id: "wr_3",
-        dbId: "Standing_Dumbbell_Reverse_Curl",
-        ar: "كيرل عكسي واقف بالدمبل",
-        en: "Standing Reverse Dumbbell Curl",
-        muscle: "أعلى الساعد",
-        pose: "wr_rev_curl",
-        kg: 8, sets: 4,
-        l1: "امسك الدمبلز وكف يدك متجه للأسفل طوال الحركة.",
-        l2: "ارفع لمستوى الكتف لتضخيم عضلة الساعد العلوية.",
-        yt: "https://www.youtube.com/results?search_query=standing+dumbbell+reverse+curl+form+short"
-      },
-      {
-        id: "wr_4",
-        dbId: "Zottman_Curl",
-        ar: "زوتمان كيرل (باي + ساعد)",
-        en: "Dumbbell Zottman Curl",
-        muscle: "ساعد شامل",
-        pose: "wr_zottman",
-        kg: 10, sets: 3,
-        l1: "اصعد بقبضة باي عادية ثم اقلب كفك للأسفل في القمة.",
-        l2: "انزل ببطء في 3 ثوانٍ بالقبضة العكسية لتفجير الساعد.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+zottman+curl+proper+form+short"
-      },
-      {
-        id: "wr_5",
-        dbId: "Seated_Dumbbell_Palms-Down_Wrist_Curl",
-        ar: "عزل رسغ فردي جالس",
-        en: "Seated Isolated Wrist Extension",
-        muscle: "ريست",
-        pose: "wr_seated_ext",
-        kg: 6, sets: 3,
-        l1: "ثبّت معصمك على حافة الركبة وامسك الدمبل بتركيز.",
-        l2: "حرك مفصل الريست فقط للأعلى والأسفل مع ثبات الساعد.",
-        yt: "https://www.youtube.com/results?search_query=seated+dumbbell+wrist+extension+short"
-      },
-      {
-        id: "wr_6",
-        dbId: "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl",
-        ar: "لف رسغ خلف الظهر واقف",
-        en: "Behind-The-Back Wrist Curl",
-        muscle: "ساعد داخلي",
-        pose: "wr_behind",
-        kg: 12, sets: 4,
-        l1: "امسك الأوزان خلف ظهرك وأنت واقف وكف اليد للخلف.",
-        l2: "لف أصابعك ومعصمك للأعلى واعصر الساعد في القمة.",
-        yt: "https://www.youtube.com/results?search_query=behind+the+back+dumbbell+wrist+curl+short"
-      },
-      {
-        id: "wr_7",
-        dbId: "Farmers_Walk",
-        ar: "مشية وثبات الفلاح بأثقل دمبل",
-        en: "Heavy Farmer's Walk / Hold",
-        muscle: "قوة القبضة",
-        pose: "wr_farmer",
-        kg: 20, sets: 4,
-        l1: "امسك أثقل دمبلين بجانبك مع شد الكتفين للخلف.",
-        l2: "امشِ أو اثبت 45 ثانية لتقوية أعصاب اليد والريست.",
-        yt: "https://www.youtube.com/results?search_query=dumbbell+farmers+walk+grip+strength+short"
-      }
+      { id: "wr_1", dbId: "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench", ar: "لف رسغ داخلي", en: "Wrist Curl", muscle: "ساعد داخلي", pose: "seated", kg: 10, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=dumbbell+wrist+curl+short" },
+      { id: "wr_2", dbId: "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench", ar: "لف رسغ عكسي", en: "Reverse Wrist Curl", muscle: "ساعد خارجي", pose: "seated", kg: 6, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=reverse+dumbbell+wrist+curl+short" },
+      { id: "wr_3", dbId: "Standing_Dumbbell_Reverse_Curl", ar: "كيرل عكسي واقف", en: "Reverse Curl", muscle: "أعلى الساعد", pose: "curl", kg: 8, sets: 4, reps: 12, yt: "https://www.youtube.com/results?search_query=dumbbell+reverse+curl+short" },
+      { id: "wr_4", dbId: "Zottman_Curl", ar: "زوتمان كيرل", en: "Zottman Curl", muscle: "ساعد شامل", pose: "curl", kg: 10, sets: 3, reps: 12, yt: "https://www.youtube.com/results?search_query=zottman+curl+dumbbell+short" },
+      { id: "wr_5", dbId: "Seated_Dumbbell_Palms-Down_Wrist_Curl", ar: "عزل رسغ فردي جالس", en: "Seated Wrist Ext", muscle: "ريست", pose: "seated", kg: 6, sets: 3, reps: 15, yt: "https://www.youtube.com/results?search_query=seated+wrist+extension+dumbbell+short" },
+      { id: "wr_6", dbId: "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl", ar: "لف رسغ خلف الظهر", en: "Behind-Back Wrist Curl", muscle: "ساعد داخلي", pose: "curl", kg: 12, sets: 4, reps: 15, yt: "https://www.youtube.com/results?search_query=behind+the+back+wrist+curl+short" },
+      { id: "wr_7", dbId: "Farmers_Walk", ar: "ثبات قبضة الفلاح", en: "Farmer's Hold", muscle: "قوة القبضة", pose: "curl", kg: 20, sets: 4, reps: 45, yt: "https://www.youtube.com/results?search_query=farmers+walk+dumbbell+grip+short" }
     ]
   }
 ];
 
-// ==================== APP STATE ====================
-let activeSplitIdx = 0;
-let activeDayNum = 1;
-let activeMuscleFilter = "الكل";
-let visualMode = "real"; // 'real' | 'anatomy'
-let modalLoopInterval = null;
-let trackerData = JSON.parse(localStorage.getItem("homeGymPro_v5") || "{}");
+let store = JSON.parse(localStorage.getItem("homeGymMono_v7") || "{}");
+let currentDay = Number(store.lastActiveDay) || 1;
+let currentSplit = (currentDay - 1) % 5;
+let currentFilter = "الكل";
+let modalTimer = null;
 
-function getEntry(day, exId, defKg, defSets) {
-  const key = `d${day}_${exId}`;
-  return trackerData[key] || { kg: defKg, sets: defSets, done: false };
+function getSplitIndexForDay(day) {
+  return (day - 1) % 5;
 }
 
-function saveEntry(day, exId, field, value) {
-  const ex = findExById(exId);
-  const key = `d${day}_${exId}`;
-  const current = getEntry(day, exId, ex.kg, ex.sets);
-  current[field] = value;
-  trackerData[key] = current;
-  localStorage.setItem("homeGymPro_v5", JSON.stringify(trackerData));
+// Splash Screen Loader
+window.addEventListener("DOMContentLoaded", () => {
+  const bar = document.getElementById("splashBar");
+  setTimeout(() => { if (bar) bar.style.width = "100%"; }, 60);
+  setTimeout(() => {
+    const splash = document.getElementById("splashScreen");
+    if (splash) splash.classList.add("hide");
+  }, 950);
+});
+
+function getLog(day, ex) {
+  const key = `d${day}_${ex.id}`;
+  const saved = store[key];
+  return {
+    kg: saved && saved.kg !== undefined ? saved.kg : ex.kg,
+    sets: saved && saved.sets !== undefined ? saved.sets : ex.sets,
+    reps: saved && saved.reps !== undefined ? saved.reps : ex.reps,
+    done: saved && saved.done ? true : false
+  };
+}
+
+// Find the most recent logged entry for this exercise prior to currentDay
+function getPreviousSessionLog(day, ex) {
+  for (let d = day - 1; d >= 1; d--) {
+    const saved = store[`d${d}_${ex.id}`];
+    if (saved && (saved.done || saved.touched || store[`day_done_${d}`])) {
+      return {
+        day: d,
+        kg: saved.kg !== undefined ? saved.kg : ex.kg,
+        sets: saved.sets !== undefined ? saved.sets : ex.sets,
+        reps: saved.reps !== undefined ? saved.reps : ex.reps
+      };
+    }
+  }
+  return null;
+}
+
+function applyPrevSession(exId, kg, sets, reps) {
+  const kgIn = document.getElementById(`in_kg_${exId}`);
+  const setsIn = document.getElementById(`in_sets_${exId}`);
+  const repsIn = document.getElementById(`in_reps_${exId}`);
+  if (kgIn) kgIn.value = kg;
+  if (setsIn) setsIn.value = sets;
+  if (repsIn) repsIn.value = reps;
+
+  const ex = findEx(exId);
+  const key = `d${currentDay}_${exId}`;
+  const cur = getLog(currentDay, ex);
+  cur.kg = kg;
+  cur.sets = sets;
+  cur.reps = reps;
+  cur.touched = true;
+  store[key] = cur;
+  localStorage.setItem("homeGymMono_v7", JSON.stringify(store));
+}
+
+function isDayFinished(day) {
+  return Boolean(store[`day_done_${day}`]);
+}
+
+function updateLog(exId, field, value) {
+  const ex = findEx(exId);
+  const key = `d${currentDay}_${exId}`;
+  const cur = getLog(currentDay, ex);
+  cur[field] = field === "done" ? Boolean(value) : Math.max(0, value);
+  cur.touched = true;
+  store[key] = cur;
+  localStorage.setItem("homeGymMono_v7", JSON.stringify(store));
   renderCalendar();
+  updateFinishButtonState();
 }
 
-function findExById(exId) {
-  for (const s of WORKOUT_DAYS) {
+function stepValue(exId, field, delta) {
+  const input = document.getElementById(`in_${field}_${exId}`);
+  if (!input) return;
+  const next = Math.max(0, (Number(input.value) || 0) + delta);
+  input.value = next;
+  updateLog(exId, field, next);
+}
+
+function findEx(exId) {
+  for (const s of SPLITS) {
     for (const e of s.exercises) if (e.id === exId) return e;
   }
-  return { kg: 10, sets: 4 };
+  return { id: exId, kg: 10, sets: 4, reps: 12 };
 }
 
-// ==================== VISUAL MODE SWITCH ====================
 function setVisualMode(mode) {
-  visualMode = mode;
   document.body.classList.toggle("mode-anatomy", mode === "anatomy");
-  document.getElementById("btnModeReal").classList.toggle("active", mode === "real");
-  document.getElementById("btnModeAnatomy").classList.toggle("active", mode === "anatomy");
+  document.getElementById("modeRealBtn").classList.toggle("active", mode === "real");
+  document.getElementById("modeAnatomyBtn").classList.toggle("active", mode === "anatomy");
 }
 
-function toggleSingleCardView(exId) {
-  const realEl = document.getElementById("real_" + exId);
-  const cvEl = document.getElementById("cv_" + exId);
-  if (!realEl || !cvEl) return;
-  const showingCanvas = cvEl.style.display === "block";
-  cvEl.style.display = showingCanvas ? "none" : "block";
-  realEl.style.display = showingCanvas ? "block" : "none";
+// Calendar Modal Functions
+function openCalModal() {
+  renderCalendar();
+  document.getElementById("calModal").classList.add("open");
 }
 
-// ==================== 30-DAY CALENDAR ====================
+function closeCalModal() {
+  document.getElementById("calModal").classList.remove("open");
+}
+
+function updateBottomNavHighlight() {
+  for (let i = 0; i < 5; i++) {
+    const navEl = document.getElementById("nav" + i);
+    if (navEl) navEl.classList.toggle("active", i === currentSplit);
+  }
+}
+
 function renderCalendar() {
+  const splitName = SPLIT_SHORT_NAMES[getSplitIndexForDay(currentDay)];
+  document.getElementById("activeDayHeader").textContent = `${currentDay} (${splitName})`;
+  const topBtn = document.getElementById("topCalBtn");
+  if (topBtn) topBtn.classList.toggle("done-day", isDayFinished(currentDay));
+
+  let completedDays = 0;
   const grid = document.getElementById("calGrid");
-  document.getElementById("calDayLabel").textContent = activeDayNum;
-
-  let completedToday = 0;
-  Object.keys(trackerData).forEach(k => {
-    if (k.startsWith(`d${activeDayNum}_`) && trackerData[k].done) completedToday++;
-  });
-
-  document.getElementById("calStatsLabel").textContent =
-    completedToday > 0
-      ? `تم إنجاز ${completedToday} تمارين في يوم ${activeDayNum} ✓`
-      : `الأوزان والمجاميع محفوظة ليوم ${activeDayNum}`;
-
   let html = "";
   for (let d = 1; d <= 30; d++) {
-    const hasLog = Object.keys(trackerData).some(k => k.startsWith(`d${d}_`) && trackerData[k].done);
+    const hasLog = isDayFinished(d) || Object.keys(store).some(k => k.startsWith(`d${d}_`) && store[k].done);
+    if (hasLog) completedDays++;
+    const daySplitLabel = SPLIT_SHORT_NAMES[getSplitIndexForDay(d)];
     html += `
-      <div class="day-pill ${d === activeDayNum ? 'active' : ''} ${hasLog ? 'logged' : ''}"
-           onclick="selectDay(${d})">${d}</div>
+      <button class="day-btn ${d === currentDay ? 'active' : ''} ${hasLog ? 'logged' : ''}" onclick="selectDay(${d})">
+        <span>${d}</span>
+        <small>${daySplitLabel}</small>
+      </button>
     `;
   }
-  grid.innerHTML = html;
+  if (grid) grid.innerHTML = html;
+  const totalEl = document.getElementById("calTotalDone");
+  if (totalEl) totalEl.innerHTML = `<b>${completedDays}</b> / 30 مكتمل`;
 }
 
-function selectDay(day) {
-  activeDayNum = day;
+function selectDay(d) {
+  currentDay = d;
+  currentSplit = getSplitIndexForDay(d);
+  currentFilter = "الكل";
+  store.lastActiveDay = currentDay;
+  localStorage.setItem("homeGymMono_v7", JSON.stringify(store));
+  updateBottomNavHighlight();
   renderCalendar();
-  renderCurrentSplit();
+  renderExercises();
+  closeCalModal();
 }
 
-function switchSplit(idx) {
-  activeSplitIdx = idx;
-  activeMuscleFilter = "الكل";
-  for (let i = 0; i < 5; i++) {
-    document.getElementById("nav" + i).classList.toggle("active", i === idx);
-  }
-  renderCurrentSplit();
+function selectSplit(idx) {
+  currentSplit = idx;
+  currentFilter = "الكل";
+  updateBottomNavHighlight();
+  renderExercises();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function selectFilter(m) {
-  activeMuscleFilter = m;
-  renderCurrentSplit();
+  currentFilter = m;
+  renderExercises();
 }
 
-// ==================== RENDER EXERCISES ====================
-const activeCanvasItems = [];
+function updateFinishButtonState() {
+  const btn = document.getElementById("finishDayBtn");
+  const txt = document.getElementById("finishBtnText");
+  if (!btn || !txt) return;
+  const finished = isDayFinished(currentDay);
+  btn.classList.toggle("completed", finished);
+  txt.textContent = finished ? `تم إنهاء تمرين يوم ${currentDay} ✓` : `إنهاء تمرين اليوم (يوم ${currentDay})`;
+}
 
-function renderCurrentSplit() {
-  activeCanvasItems.length = 0;
-  const split = WORKOUT_DAYS[activeSplitIdx];
-  document.getElementById("splitTitle").textContent = split.title;
+function finishWorkoutDay() {
+  const split = SPLITS[currentSplit];
+  let totalSets = 0;
+  let totalReps = 0;
 
-  // Build unique sub-muscle filters for this day
+  split.exercises.forEach(ex => {
+    const cur = getLog(currentDay, ex);
+    cur.done = true;
+    cur.touched = true;
+    store[`d${currentDay}_${ex.id}`] = cur;
+    totalSets += Number(cur.sets) || 0;
+    totalReps += (Number(cur.sets) || 0) * (Number(cur.reps) || 0);
+  });
+
+  store[`day_done_${currentDay}`] = true;
+  localStorage.setItem("homeGymMono_v7", JSON.stringify(store));
+
+  renderCalendar();
+  renderExercises();
+
+  document.getElementById("sumDayNum").textContent = `${currentDay} (${split.shortName})`;
+  document.getElementById("sumExCount").textContent = split.exercises.length;
+  document.getElementById("sumSetsCount").textContent = totalSets;
+  document.getElementById("sumRepsCount").textContent = totalReps;
+  document.getElementById("summaryModal").classList.add("open");
+}
+
+function advanceToNextDay() {
+  closeSummaryModal();
+  const nextD = currentDay < 30 ? currentDay + 1 : 1;
+  selectDay(nextD);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function closeSummaryModal() {
+  document.getElementById("summaryModal").classList.remove("open");
+}
+
+const activeCanvases = [];
+
+function renderExercises() {
+  activeCanvases.length = 0;
+  const split = SPLITS[currentSplit];
+  document.getElementById("splitTitle").textContent = `يوم ${currentDay}: ${split.title}`;
+
   const muscles = ["الكل", ...new Set(split.exercises.map(e => e.muscle))];
-  const filterBar = document.getElementById("filterBar");
-  filterBar.innerHTML = muscles.map(m => `
-    <button class="filter-chip ${m === activeMuscleFilter ? 'active' : ''}"
-            onclick="selectFilter('${m}')">${m}</button>
+  document.getElementById("filterRow").innerHTML = muscles.map(m => `
+    <button class="chip ${m === currentFilter ? 'active' : ''}" onclick="selectFilter('${m}')">${m}</button>
   `).join("");
 
-  const filtered = activeMuscleFilter === "الكل"
+  const list = currentFilter === "الكل"
     ? split.exercises
-    : split.exercises.filter(e => e.muscle === activeMuscleFilter);
+    : split.exercises.filter(e => e.muscle === currentFilter);
 
-  document.getElementById("splitCount").textContent = `${filtered.length} تمارين • يوم ${activeDayNum}`;
+  document.getElementById("splitMeta").textContent = `${list.length} تمارين • جدول يوم ${currentDay}`;
 
-  const container = document.getElementById("exercisesContainer");
-  container.innerHTML = filtered.map((ex, i) => {
-    const log = getEntry(activeDayNum, ex.id, ex.kg, ex.sets);
-    const frame0 = `${DB_IMG_BASE}${ex.dbId}/0.jpg`;
-    const frame1 = `${DB_IMG_BASE}${ex.dbId}/1.jpg`;
+  document.getElementById("exList").innerHTML = list.map((ex, idx) => {
+    const log = getLog(currentDay, ex);
+    const prev = getPreviousSessionLog(currentDay, ex);
+    const f0 = `${DB_BASE}${ex.dbId}/0.jpg`;
+    const f1 = `${DB_BASE}${ex.dbId}/1.jpg`;
+
+    const prevBadgeHtml = prev
+      ? `<div class="prev-session-bar" onclick="applyPrevSession('${ex.id}', ${prev.kg}, ${prev.sets}, ${prev.reps})">
+           <div class="prev-session-badge">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+             <span>آخر مرة (يوم ${prev.day}): <b>${prev.kg} KG</b> × <b>${prev.reps}</b> عدات (${prev.sets} مجاميع)</span>
+           </div>
+           <span class="prev-copy-hint">اضغط للنسخ</span>
+         </div>`
+      : `<div class="prev-session-bar">
+           <div class="prev-session-badge" style="cursor:default;">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+             <span>آخر مرة: <b>-- KG</b> × <b>--</b> عدات (أول مرة)</span>
+           </div>
+         </div>`;
 
     return `
-      <article class="ex-card ${log.done ? 'completed' : ''}" id="card_${ex.id}">
-        <div class="ex-body">
-          <!-- Visual Box: Real Stop-Motion Video Loop + Distinct Biomechanical Pose Canvas -->
-          <div class="media-box" onclick="openZoomModal('${ex.id}')">
-            <span class="badge-muscle">${ex.muscle}</span>
-            <span class="badge-num">#${i + 1}</span>
-            <span class="badge-loop" id="step_lbl_${ex.id}">REAL LOOP</span>
-
-            <div class="real-loop-wrap" id="real_${ex.id}">
-              <img class="real-frame f0" src="${frame0}" alt="${ex.en} 0" loading="lazy"
+      <article class="ex-card ${log.done ? 'done' : ''}" id="card_${ex.id}">
+        <div class="ex-top">
+          <div class="media-box" onclick="openModal('${ex.id}')">
+            <span class="num-tag">#${idx + 1}</span>
+            <span class="zoom-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </span>
+            <div class="real-wrap" id="real_${ex.id}">
+              <img class="real-img f0" src="${f0}" alt="${ex.en}" loading="lazy"
                    onerror="this.parentElement.style.display='none'; document.getElementById('cv_${ex.id}').style.display='block';">
-              <img class="real-frame f1" src="${frame1}" alt="${ex.en} 1" loading="lazy">
+              <img class="real-img f1" src="${f1}" alt="${ex.en}" loading="lazy">
             </div>
-
-            <canvas class="anatomy-canvas" id="cv_${ex.id}" width="170" height="176"></canvas>
+            <canvas class="anatomy-cv" id="cv_${ex.id}" width="140" height="132"></canvas>
           </div>
 
-          <!-- Info & 2-Line Technique -->
-          <div class="ex-details">
-            <div class="title-row">
+          <div class="ex-info">
+            <div class="ex-head-row">
               <div>
                 <div class="ex-ar">${ex.ar}</div>
                 <span class="ex-en">${ex.en}</span>
               </div>
-              <button class="done-btn" onclick="toggleExDone('${ex.id}')">✓</button>
+              <button class="check-btn" onclick="toggleDone('${ex.id}')" aria-label="تم">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
             </div>
 
-            <div class="cues-box">
-              <div><b>1:</b> ${ex.l1}</div>
-              <div><b>2:</b> ${ex.l2}</div>
+            <div class="meta-row">
+              <span class="muscle-pill"><i></i>${ex.muscle}</span>
+              <a class="icon-btn" href="${ex.yt}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span>فيديو</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="ex-footer">
-          <div class="inputs-wrap">
-            <div class="input-pill">
-              <input type="number" value="${log.kg}" onchange="saveEntry(${activeDayNum}, '${ex.id}', 'kg', Number(this.value))">
-              <span>KG</span>
-            </div>
-            <div class="input-pill">
-              <input type="number" value="${log.sets}" onchange="saveEntry(${activeDayNum}, '${ex.id}', 'sets', Number(this.value))">
-              <span>مجاميع</span>
+        ${prevBadgeHtml}
+
+        <div class="counters-grid">
+          <div class="counter-box">
+            <div class="counter-label">الوزن <span>KG</span></div>
+            <div class="counter-ctrl">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'kg', -1)">−</button>
+              <input class="counter-input" id="in_kg_${ex.id}" type="number" value="${log.kg}"
+                     onchange="updateLog('${ex.id}', 'kg', Number(this.value))">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'kg', 1)">+</button>
             </div>
           </div>
 
-          <div class="video-btns">
-            <button class="swap-view-btn" onclick="toggleSingleCardView('${ex.id}')">تبديل العرض</button>
-            <a class="yt-link" href="${ex.yt}" target="_blank" rel="noopener">▶ Watch يوتيوب</a>
+          <div class="counter-box">
+            <div class="counter-label">المجاميع <span>SETS</span></div>
+            <div class="counter-ctrl">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'sets', -1)">−</button>
+              <input class="counter-input" id="in_sets_${ex.id}" type="number" value="${log.sets}"
+                     onchange="updateLog('${ex.id}', 'sets', Number(this.value))">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'sets', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="counter-box">
+            <div class="counter-label">العدات <span>REPS</span></div>
+            <div class="counter-ctrl">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'reps', -1)">−</button>
+              <input class="counter-input" id="in_reps_${ex.id}" type="number" value="${log.reps}"
+                     onchange="updateLog('${ex.id}', 'reps', Number(this.value))">
+              <button class="step-btn" onclick="stepValue('${ex.id}', 'reps', 1)">+</button>
+            </div>
           </div>
         </div>
       </article>
     `;
   }).join("");
 
-  filtered.forEach((ex, index) => {
+  list.forEach(ex => {
     const cv = document.getElementById("cv_" + ex.id);
-    if (cv) {
-      activeCanvasItems.push({
-        cv,
-        ctx: cv.getContext("2d"),
-        pose: ex.pose,
-        seed: index + 1
-      });
-    }
+    if (cv) activeCanvases.push({ cv, ctx: cv.getContext("2d"), pose: ex.pose });
   });
+
+  updateFinishButtonState();
 }
 
-function toggleExDone(exId) {
-  const ex = findExById(exId);
-  const cur = getEntry(activeDayNum, exId, ex.kg, ex.sets);
-  saveEntry(activeDayNum, exId, "done", !cur.done);
+function toggleDone(exId) {
+  const ex = findEx(exId);
+  const cur = getLog(currentDay, ex);
+  updateLog(exId, "done", !cur.done);
   const card = document.getElementById("card_" + exId);
-  if (card) card.classList.toggle("completed", !cur.done);
+  if (card) card.classList.toggle("done", !cur.done);
 }
 
-// ==================== REAL EXERCISE STOP-MOTION LOOP ENGINE ====================
-// Alternates smoothly between verified frame 0.jpg (start) and 1.jpg (peak contraction)
-let globalLoopStep = false;
+// Automatic Stop-Motion Frame Loop
+let stepToggle = false;
 setInterval(() => {
-  globalLoopStep = !globalLoopStep;
-  document.querySelectorAll(".real-loop-wrap").forEach(el => {
-    el.classList.toggle("step2", globalLoopStep);
+  stepToggle = !stepToggle;
+  document.querySelectorAll(".real-wrap").forEach(el => {
+    el.classList.toggle("step2", stepToggle);
   });
-}, 850);
+}, 820);
 
-// ==================== ZOOM MODAL FOR FULL-SCREEN REAL LOOP ====================
-function openZoomModal(exId) {
-  const ex = findExById(exId);
-  if (!ex || !ex.dbId) return;
+// Modal Zoom
+function openModal(exId) {
+  const ex = findEx(exId);
   document.getElementById("modalTitle").textContent = `${ex.ar} (${ex.en})`;
   const img0 = document.getElementById("modalImg0");
   const img1 = document.getElementById("modalImg1");
-  img0.src = `${DB_IMG_BASE}${ex.dbId}/0.jpg`;
-  img1.src = `${DB_IMG_BASE}${ex.dbId}/1.jpg`;
+  img0.src = `${DB_BASE}${ex.dbId}/0.jpg`;
+  img1.src = `${DB_BASE}${ex.dbId}/1.jpg`;
   document.getElementById("zoomModal").classList.add("open");
 
-  if (modalLoopInterval) clearInterval(modalLoopInterval);
-  let step = false;
-  modalLoopInterval = setInterval(() => {
-    step = !step;
-    img1.style.opacity = step ? "1" : "0";
+  if (modalTimer) clearInterval(modalTimer);
+  let s = false;
+  modalTimer = setInterval(() => {
+    s = !s;
+    img1.style.opacity = s ? "1" : "0";
   }, 800);
 }
 
-function closeZoomModal() {
+function closeModal() {
   document.getElementById("zoomModal").classList.remove("open");
-  if (modalLoopInterval) clearInterval(modalLoopInterval);
+  if (modalTimer) clearInterval(modalTimer);
 }
 
-// ==================== 36 UNIQUE BIOMECHANICAL POSES (ANATOMY MODE) ====================
-function drawLimb(ctx, x1, y1, x2, y2, r1, r2, bulge, activeHeat) {
-  const dx = x2 - x1, dy = y2 - y1;
-  const len = Math.hypot(dx, dy) || 1;
-  const nx = -dy / len, ny = dx / len;
-  const mx = (x1 + x2) * 0.5 + nx * bulge;
-  const my = (y1 + y2) * 0.5 + ny * bulge;
-  const rm = (r1 + r2) * 0.56 + Math.abs(bulge) * 0.5;
-
-  ctx.save();
+// Monochrome + Electric Blue Anatomy Renderer
+function drawSegment(ctx, x1, y1, x2, y2, w, active) {
+  ctx.strokeStyle = active ? "#3b82f6" : "#52525b";
+  ctx.lineWidth = w;
+  ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.moveTo(x1 + nx * r1, y1 + ny * r1);
-  ctx.quadraticCurveTo(mx + nx * rm, my + ny * rm, x2 + nx * r2, y2 + ny * r2);
-  ctx.lineTo(x2 - nx * r2, y2 - ny * r2);
-  ctx.quadraticCurveTo(mx - nx * rm, my - ny * rm, x1 - nx * r1, y1 - ny * r1);
-  ctx.closePath();
-
-  if (activeHeat > 0.05) {
-    ctx.fillStyle = `rgba(239, 68, 68, ${0.35 + activeHeat * 0.55})`;
-    ctx.strokeStyle = `rgba(252, 165, 165, 0.85)`;
-  } else {
-    ctx.fillStyle = "#2b3343";
-    ctx.strokeStyle = "#4b5563";
-  }
-  ctx.lineWidth = 1.4;
-  ctx.fill();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
   ctx.stroke();
-  ctx.restore();
 }
 
-function drawDB(ctx, x, y, ang = 0) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(ang);
-  ctx.fillStyle = "#cbd5e1";
-  ctx.fillRect(-9, -2, 18, 4);
-  ctx.fillStyle = "#0f172a";
-  ctx.strokeStyle = "#60a5fa";
-  ctx.lineWidth = 1.4;
-  ctx.strokeRect(-10, -7, 4, 14);
-  ctx.strokeRect(6, -7, 4, 14);
-  ctx.restore();
-}
-
-function renderUniquePose(item, ts) {
+function renderAnatomy(item, ts) {
   const { ctx, cv, pose } = item;
-  const W = cv.width, H = cv.height;
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  const p = (Math.sin(ts * 0.004) + 1) * 0.5;
 
-  // Floor baseline
-  ctx.strokeStyle = "#334155";
+  ctx.strokeStyle = "#27272a";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(10, 158);
-  ctx.lineTo(160, 158);
+  ctx.moveTo(12, 118);
+  ctx.lineTo(128, 118);
   ctx.stroke();
 
-  const cycle = (ts * 0.0022) % 1;
-  const p = cycle < 0.5 ? Math.sin(cycle * Math.PI) : Math.sin(cycle * Math.PI);
-
-  // Group 1: Standing Curls & Raises
-  if (["curl_supinate", "curl_hammer", "curl_cross", "wr_rev_curl", "wr_zottman", "sh_front", "wr_behind", "wr_farmer"].includes(pose)) {
-    const sh = { x: 78, y: 52 }, hip = { x: 76, y: 98 };
-    drawLimb(ctx, hip.x, hip.y, 78, 156, 10, 5, 1, 0);
-    drawLimb(ctx, sh.x, sh.y, hip.x, hip.y, 13, 10, 1, pose === "wr_farmer" ? 0.4 : 0);
-    ctx.fillStyle = "#475569";
-    ctx.beginPath(); ctx.arc(sh.x, sh.y - 16, 11, 0, Math.PI * 2); ctx.fill();
-
-    let el = { x: sh.x + 3, y: sh.y + 28 };
-    let ang = 1.3 - p * 2.1;
-    if (pose === "sh_front") {
-      ang = 1.35 - p * 1.45;
-      el = { x: sh.x + Math.cos(ang) * 25, y: sh.y + Math.sin(ang) * 25 };
-    } else if (pose === "wr_behind") {
-      el = { x: sh.x - 10, y: sh.y + 28 };
-      ang = 1.7 + p * 0.6;
-    } else if (pose === "wr_farmer") {
-      ang = 1.55;
-    }
-    const wr = { x: el.x + Math.cos(ang) * 26, y: el.y + Math.sin(ang) * 26 };
-    drawLimb(ctx, sh.x, sh.y, el.x, el.y, 8, 6.5, p * 4.5, p);
-    drawLimb(ctx, el.x, el.y, wr.x, wr.y, 6.5, 4.5, p * 3, p * 0.7);
-    drawDB(ctx, wr.x, wr.y, pose === "curl_hammer" ? 1.57 : 0);
-  }
-  // Group 2: Seated Chair Exercises (Concentration, Wrist Curls, Dips)
-  else if (["curl_conc", "wr_curl_up", "wr_curl_down", "wr_seated_ext", "tri_dips"].includes(pose)) {
-    ctx.strokeStyle = "#475569";
-    ctx.strokeRect(32, 114, 40, 42);
-    const hip = { x: pose === "tri_dips" ? 82 : 56, y: pose === "tri_dips" ? 104 + (1 - p) * 18 : 110 };
-    const sh = { x: hip.x + 12, y: hip.y - 42 };
-    drawLimb(ctx, hip.x, hip.y, hip.x + 36, 116, 10, 7, 1, 0);
-    drawLimb(ctx, hip.x + 36, 116, hip.x + 40, 156, 7, 5, 0, 0);
-    drawLimb(ctx, sh.x, sh.y, hip.x, hip.y, 12, 9, 0, 0);
-    ctx.fillStyle = "#475569";
-    ctx.beginPath(); ctx.arc(sh.x + 4, sh.y - 14, 10, 0, Math.PI * 2); ctx.fill();
-
-    const el = { x: sh.x + (pose === "tri_dips" ? -16 : 16), y: sh.y + 26 };
-    const ang = pose === "curl_conc" ? (1.3 - p * 2.1) : (0.5 - p * 1.1);
-    const wr = { x: el.x + Math.cos(ang) * 24, y: el.y + Math.sin(ang) * 24 };
-    drawLimb(ctx, sh.x, sh.y, el.x, el.y, 7.5, 6, p * 4, p);
-    drawLimb(ctx, el.x, el.y, wr.x, wr.y, 6, 4.5, p * 3.5, p);
-    if (pose !== "tri_dips") drawDB(ctx, wr.x, wr.y, 0);
-  }
-  // Group 3: Overhead / Front Delts / Lateral / Shrugs
-  else if (["tri_overhead", "sh_press", "sh_arnold", "sh_lat_both", "sh_lat_single", "sh_shrug"].includes(pose)) {
-    const cx = 85, shY = 62 - (pose === "sh_shrug" ? p * 8 : 0);
-    drawLimb(ctx, cx, shY, cx, 116, 16, 11, 0, pose === "sh_shrug" ? p : 0);
-    drawLimb(ctx, cx - 8, 116, cx - 10, 156, 8, 5, 0, 0);
-    drawLimb(ctx, cx + 8, 116, cx + 10, 156, 8, 5, 0, 0);
-    ctx.fillStyle = "#475569";
-    ctx.beginPath(); ctx.arc(cx, 42, 10, 0, Math.PI * 2); ctx.fill();
-
-    [-1, 1].forEach(dir => {
-      if (pose === "sh_lat_single" && dir === -1) return;
-      const sh = { x: cx + dir * 20, y: shY };
-      let el, wr;
-      if (pose === "tri_overhead") {
-        el = { x: cx + dir * 10, y: 36 };
-        wr = { x: cx, y: 48 - p * 28 };
-      } else if (pose === "sh_press" || pose === "sh_arnold") {
-        el = { x: sh.x + dir * 12, y: sh.y + 8 - p * 24 };
-        wr = { x: el.x, y: el.y - 22 };
-      } else if (pose.startsWith("sh_lat")) {
-        const a = 1.3 - p * 1.25;
-        el = { x: sh.x + dir * Math.cos(a) * 22, y: sh.y + Math.sin(a) * 22 };
-        wr = { x: el.x + dir * Math.cos(a) * 20, y: el.y + Math.sin(a) * 20 };
-      } else {
-        el = { x: sh.x + dir * 4, y: sh.y + 22 };
-        wr = { x: el.x, y: el.y + 20 };
-      }
-      drawLimb(ctx, sh.x, sh.y, el.x, el.y, 7.5, 6, p * 3.5, p);
-      drawLimb(ctx, el.x, el.y, wr.x, wr.y, 6, 4.5, 0, 0.3);
-      drawDB(ctx, wr.x, wr.y, 0);
-    });
-  }
-  // Group 4: Floor / Supine / Pushups
-  else if (["tri_skull", "ch_floor_press", "ch_incline", "ch_crush", "ch_fly", "ch_pullover", "bk_pullover", "ch_pushup", "ch_decline_pu"].includes(pose)) {
-    const isPU = pose.includes("pu");
-    const sh = isPU ? { x: 48, y: 132 - p * 22 } : { x: 52, y: pose === "ch_incline" ? 126 : 146 };
-    const hip = isPU ? { x: 96, y: 138 - p * 12 } : { x: 102, y: 148 };
-    drawLimb(ctx, sh.x, sh.y, hip.x, hip.y, 12, 10, 2, p);
-    drawLimb(ctx, hip.x, hip.y, 146, isPU && pose === "ch_decline_pu" ? 118 : 154, 9, 5, 0, 0);
-    ctx.fillStyle = "#475569";
-    ctx.beginPath(); ctx.arc(sh.x - 14, sh.y - 2, 10, 0, Math.PI * 2); ctx.fill();
-
-    const el = { x: sh.x + 8, y: isPU ? 146 : sh.y - 10 - p * 18 };
-    const wr = { x: sh.x + (pose.includes("pullover") ? -18 + p * 26 : 6), y: isPU ? 156 : el.y - 22 };
-    drawLimb(ctx, sh.x, sh.y, el.x, el.y, 7.5, 6, p * 3, p);
-    drawLimb(ctx, el.x, el.y, wr.x, wr.y, 6, 4.5, 0, 0.4);
-    if (!isPU) drawDB(ctx, wr.x, wr.y, 0);
-  }
-  // Group 5: Bent-Over Rows, Kickback & RDL
-  else {
-    const hip = { x: 54, y: 98 };
-    const sh = { x: 98, y: pose === "bk_rdl" ? 86 - p * 26 : 74 };
-    drawLimb(ctx, hip.x, hip.y, 60, 156, 10, 5, 0, pose === "bk_rdl" ? p : 0);
-    drawLimb(ctx, sh.x, sh.y, hip.x, hip.y, 12, 10, -2, p);
-    ctx.fillStyle = "#475569";
-    ctx.beginPath(); ctx.arc(sh.x + 12, sh.y - 6, 10, 0, Math.PI * 2); ctx.fill();
-
-    const el = { x: sh.x - 6 - p * 16, y: sh.y + 20 - p * 20 };
-    const wr = { x: pose === "tri_kickback" ? el.x - p * 24 : el.x + 2, y: el.y + 22 };
-    drawLimb(ctx, sh.x, sh.y, el.x, el.y, 7.5, 6, p * 4, p);
-    drawLimb(ctx, el.x, el.y, wr.x, wr.y, 6, 4.5, 0, 0.3);
-    drawDB(ctx, wr.x, wr.y, 0);
+  if (pose === "floor") {
+    drawSegment(ctx, 35, 108, 85, 108, 10, false);
+    drawSegment(ctx, 85, 108, 112, 115, 8, false);
+    drawSegment(ctx, 42, 104, 46, 86 - p * 22, 7, true);
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.arc(24, 106, 7, 0, Math.PI * 2); ctx.fill();
+  } else if (pose === "row") {
+    drawSegment(ctx, 48, 76, 54, 116, 9, false);
+    drawSegment(ctx, 48, 76, 84, 58, 11, true);
+    drawSegment(ctx, 80, 60, 74 - p * 12, 86 - p * 18, 7, true);
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.arc(94, 52, 7, 0, Math.PI * 2); ctx.fill();
+  } else {
+    drawSegment(ctx, 70, 44, 70, 82, 12, false);
+    drawSegment(ctx, 70, 82, 70, 116, 9, false);
+    const wy = pose === "overhead" ? (46 - p * 26) : (78 - p * 30);
+    drawSegment(ctx, 70, 48, 86, 66, 7, true);
+    drawSegment(ctx, 86, 66, 92, wy, 6, true);
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.arc(70, 31, 8, 0, Math.PI * 2); ctx.fill();
   }
 }
 
-function animateAnatomyLoop(ts) {
-  for (let i = 0; i < activeCanvasItems.length; i++) {
-    renderUniquePose(activeCanvasItems[i], ts);
+function loop(ts) {
+  for (let i = 0; i < activeCanvases.length; i++) {
+    renderAnatomy(activeCanvases[i], ts);
   }
-  requestAnimationFrame(animateAnatomyLoop);
+  requestAnimationFrame(loop);
 }
 
-// Initialize App
+updateBottomNavHighlight();
 renderCalendar();
-renderCurrentSplit();
-requestAnimationFrame(animateAnatomyLoop);
+renderExercises();
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>
-```
-
-### إيه اللي اتصلح جذرياً في النسخة دي؟
-1. **مفيش ولا فيديو أو صورة متكررة في مكان غلط (Zero Repetition):**
-   * كل تمرين من الـ **36 تمرين** مربوط بـ ID فريد ومباشر خاص بيه في قاعدة بيانات `free-exercise-db` (مش بحث عشوائي ممكن يتكرر)، وبيبدل تلقائياً بين فريم البداية `0.jpg` وفريم الانقباض `1.jpg` عشان يعملك **فيديو حقيقي متكرر (Real Stop-Motion Loop)** لنفس التمرين بالظبط.
-   * لو ضغطت على أي تمرين هيكبرلك الفيديو في شاشة كاملة.
-2. **وضعين للعرض بضغطة زر فوق (`🎬 فيديو حقيقي` / `💪 تشريح العضلة`):**
-   * تقدر تبدل بين الفيديوهات الحقيقية المتكررة وبين الرسم التشريحي المخصص لكل تمرينة، أو تبدل العرض جوه بطاقة واحدة من زر `تبديل العرض`.
-3. **شرح مختصر جداً في سطرين فقط (`1:` و `2:`)** مع زر `▶ Watch يوتيوب` المربوط ببحث التمرين الدقيق، وتقويم الـ **30 يوم** لحفظ الأوزان والمجاميع فوق التمارين مباشرة.
